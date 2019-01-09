@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/generalInfo"
+            android:title="@string/general_info" />
+        <item
+            android:id="@+id/traceSnow"
+            android:title="@string/trace_snow" />
+        <item
+            android:id="@+id/about"
+            android:title="@string/about" />
+    </group>
+</menu>
