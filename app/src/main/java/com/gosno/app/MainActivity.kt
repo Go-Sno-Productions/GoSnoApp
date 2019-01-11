@@ -3,10 +3,13 @@ package com.gosno.app
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.gosno.app.R.id.generalInfo
 import com.gosno.app.R.id.traceSnow
+import com.gosno.app.generalinfo.GeneralInfoFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             drawerLayout.closeDrawers()
             when (menuItem.itemId) {
+                generalInfo -> {
+                    openGeneralInfoScreen()
+                    true
+                }
                 traceSnow -> {
                     openTraceSnow()
                     false
@@ -48,9 +55,13 @@ class MainActivity : AppCompatActivity() {
         startActivity(playStoreIntent)
     }
 
-    private fun setUpFragment() {
+    private fun setUpFragment() = openFragment(PistesFragment.newInstance())
+
+    private fun openGeneralInfoScreen() = openFragment(GeneralInfoFragment.newInstance())
+
+    private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.contentFrame, PistesFragment.newInstance())
+        transaction.replace(R.id.contentFrame, fragment)
         transaction.commit()
     }
 
