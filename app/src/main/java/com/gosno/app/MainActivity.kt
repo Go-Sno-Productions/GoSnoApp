@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.gosno.app.piste.PistesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         setUpNavigationView()
         setUpToolbar()
         setUpFragment()
+        setUpHeader()
     }
 
     private fun setUpNavigationView() {
@@ -61,6 +65,17 @@ class MainActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
+    }
+
+    private val requestOptions = RequestOptions().centerCrop()
+
+    private fun setUpHeader() {
+        val imageView = navigationView.getHeaderView(0) as ImageView
+        imageView.setOnClickListener { }
+        Glide.with(this).asGif()
+            .apply(requestOptions)
+            .load(R.drawable.img_default)
+            .into(imageView)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
