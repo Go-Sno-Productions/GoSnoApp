@@ -4,4 +4,8 @@
     <string name="trace_snow">Trace snow</string>
     <string name="general_info">General info</string>
     <string name="home">Home</string>
+    <string name="accommodation">Accommodation</string>
+    <string name="hotel_cims">Hotel Cims</string>
+    <string name="hotel_avanti">Hotel Avanti</string>
+    <string name="contacts">Contacts</string>
 </resources>
