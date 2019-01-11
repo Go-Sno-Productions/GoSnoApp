@@ -8,10 +8,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.gosno.app.R.id.generalInfo
 import com.gosno.app.R.id.traceSnow
-import com.gosno.app.piste.PistesFragment
 import com.gosno.app.generalinfo.GeneralInfoFragment
+import com.gosno.app.piste.PistesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setUpNavigationView()
         setUpToolbar()
         setUpFragment()
+        setUpHeader()
     }
 
     private fun setUpNavigationView() {
@@ -75,13 +79,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUpHeader() {
+        val imageView = navigationView.getHeaderView(0) as ImageView
+        imageView.setOnClickListener { }
+        Glide.with(this).asGif()
+            .apply(RequestOptions().centerCrop())
+            .load(R.drawable.img_default)
+            .into(imageView)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-            if (item.itemId == android.R.id.home) {
-                drawerLayout.openDrawer(GravityCompat.START)
-                true
-            } else {
-                super.onOptionsItemSelected(item)
-            }
+        if (item.itemId == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START)
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
 
     companion object {
         fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
