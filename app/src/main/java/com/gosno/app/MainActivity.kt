@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.gosno.app.R.id.traceSnow
 import com.gosno.app.piste.PistesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             drawerLayout.closeDrawers()
             when (menuItem.itemId) {
-                traceSnow -> {
+                R.id.traceSnow -> {
                     openTraceSnow()
                     false
                 }
@@ -65,12 +64,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-            if (item.itemId == android.R.id.home) {
-                drawerLayout.openDrawer(GravityCompat.START)
-                true
-            } else {
-                super.onOptionsItemSelected(item)
-            }
+        if (item.itemId == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START)
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
 
     companion object {
         fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
