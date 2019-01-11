@@ -11,8 +11,6 @@ import android.view.MenuItem
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.gosno.app.R.id.generalInfo
-import com.gosno.app.R.id.traceSnow
 import com.gosno.app.generalinfo.GeneralInfoFragment
 import com.gosno.app.piste.PistesFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isCurrentFragmentPisteMap(): Boolean =
-            supportFragmentManager.findFragmentById(R.id.contentFrame) is PistesFragment
+        supportFragmentManager.findFragmentById(R.id.contentFrame) is PistesFragment
 
     private fun openTraceSnow() {
         val launchIntent = packageManager.getLaunchIntentForPackage(TRACE_SNOW_PACKAGE_NAME)
@@ -65,9 +63,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openTraceSnowPlayStore() {
-        val playStoreIntent = Intent(Intent.ACTION_VIEW);
-        playStoreIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        playStoreIntent.data = Uri.parse("market://details?id=$TRACE_SNOW_PACKAGE_NAME");
+        val playStoreIntent = Intent(Intent.ACTION_VIEW)
+        playStoreIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        playStoreIntent.data = Uri.parse("market://details?id=$TRACE_SNOW_PACKAGE_NAME")
         startActivity(playStoreIntent)
     }
 
