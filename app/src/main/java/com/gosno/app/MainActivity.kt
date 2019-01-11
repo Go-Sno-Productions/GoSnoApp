@@ -1,5 +1,6 @@
 package com.gosno.app
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -64,14 +65,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        if (item.itemId == android.R.id.home) {
-            drawerLayout.openDrawer(GravityCompat.START)
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
+            if (item.itemId == android.R.id.home) {
+                drawerLayout.openDrawer(GravityCompat.START)
+                true
+            } else {
+                super.onOptionsItemSelected(item)
+            }
 
     companion object {
+        fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
+
         private const val TRACE_SNOW_PACKAGE_NAME = "com.alpinereplay.android"
     }
 }
