@@ -19,6 +19,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         setUpToolbar()
+        setUpFragment()
+    }
+
+    private fun setUpFragment() {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.contentFrame, PistesFragment.newInstance())
+        transaction.commit()
     }
 
     private fun setUpToolbar() {
