@@ -67,13 +67,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val requestOptions = RequestOptions().centerCrop()
-
     private fun setUpHeader() {
         val imageView = navigationView.getHeaderView(0) as ImageView
         imageView.setOnClickListener { }
         Glide.with(this).asGif()
-            .apply(requestOptions)
+            .apply(RequestOptions().centerCrop())
             .load(R.drawable.img_default)
             .into(imageView)
     }
