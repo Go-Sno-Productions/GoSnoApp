@@ -32,18 +32,28 @@ class MainActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             drawerLayout.closeDrawers()
             when (menuItem.itemId) {
-                generalInfo -> {
+                R.id.home -> {
+                    if (!isCurrentFragmentPisteMap()) {
+                        openPisteMapScreen()
+                    }
+                    true
+                }
+                R.id.generalInfo -> {
                     openGeneralInfoScreen()
                     true
                 }
-                traceSnow -> {
+                R.id.traceSnow -> {
                     openTraceSnow()
                     false
                 }
                 else -> true
             }
         }
+        navigationView.setCheckedItem(R.id.home)
     }
+
+    private fun isCurrentFragmentPisteMap(): Boolean =
+            supportFragmentManager.findFragmentById(R.id.contentFrame) is PistesFragment
 
     private fun openTraceSnow() {
         val launchIntent = packageManager.getLaunchIntentForPackage(TRACE_SNOW_PACKAGE_NAME)
@@ -61,7 +71,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(playStoreIntent)
     }
 
-    private fun setUpFragment() = openFragment(PistesFragment.newInstance())
+    private fun setUpFragment() = openPisteMapScreen()
+
+    private fun openPisteMapScreen() = openFragment(PistesFragment.newInstance())
 
     private fun openGeneralInfoScreen() = openFragment(GeneralInfoFragment.newInstance())
 
