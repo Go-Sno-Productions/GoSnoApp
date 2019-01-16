@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.gosno.app.R
 import kotlinx.android.synthetic.main.fragment_about.*
 import nl.dionsegijn.konfetti.models.Shape
@@ -21,7 +24,20 @@ class AboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpImageViews()
         view.post { startKonfetti() }
+    }
+
+    private fun setUpImageViews() {
+        loadCircleImageView(R.drawable.vaidas, vaidasImageView)
+        loadCircleImageView(R.drawable.rokas, rokasImageView)
+    }
+
+    private fun loadCircleImageView(drawableResId: Int, imageView: ImageView) {
+        Glide.with(context!!)
+                .load(drawableResId)
+                .apply(RequestOptions.circleCropTransform())
+                .into(imageView)
     }
 
     private fun startKonfetti() {
