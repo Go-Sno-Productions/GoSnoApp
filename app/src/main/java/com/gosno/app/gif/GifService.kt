@@ -12,13 +12,17 @@ class GifService {
     private val executorService =
         Executors.newSingleThreadScheduledExecutor { runnable -> Thread(runnable, "GifScheduler") }
     private var future: Future<*>? = null
+    private var listener = SafeListener.empty()
 
     fun start(listener: (GifBucket) -> Unit) {
         cancel()
-        future = executorService.scheduleAtFixedRate(SearchRunnable(factory, handler, listener), 0, 1, TimeUnit.MINUTES)
+        this.listener = SafeListener(listener)
+        val runnable = SearchRunnable(factory, handler, this.listener)
+        future = executorService.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.MINUTES)
     }
 
     fun cancel() {
+        listener.dispose()
         future?.cancel(true)
     }
 
@@ -39,13 +43,33 @@ class GifService {
         }
 
         private fun getRequest(time: Long): GifBucketRequest {
-            // TODO
+            if (time < FLY_OFF) {
+                return GifBucketRequest.WaitingRequest()
+            }
             return GifBucketRequest.ByeRequest()
         }
     }
 
+    private class SafeListener(private var listener: (GifBucket) -> Unit) : (GifBucket) -> Unit {
+        override fun invoke(bucket: GifBucket) {
+            listener.invoke(bucket)
+        }
+
+        fun dispose() {
+            listener = emptyListener
+        }
+
+        companion object {
+            private val emptyListener: (GifBucket) -> Unit = {}
+
+            fun empty() = SafeListener(emptyListener)
+        }
+    }
+
     companion object {
-        private const val FLY_OFF = 1L
+        // TODO
+        // https://www.epochconverter.com/
+        private const val FLY_OFF = 1548523800000L
         private const val BARCELONA = 2L
         private const val SKY_TIME = 3L
         private const val BARCELONA_2 = 4L
