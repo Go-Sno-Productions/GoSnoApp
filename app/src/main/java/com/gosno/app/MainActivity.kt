@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.gosno.app.about.AboutFragment
 import com.gosno.app.generalinfo.GeneralInfoFragment
 import com.gosno.app.piste.PistesFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,6 +45,10 @@ class MainActivity : AppCompatActivity() {
                     openTraceSnow()
                     false
                 }
+                R.id.about -> {
+                    openAboutScreen()
+                    false
+                }
                 else -> true
             }
         }
@@ -74,6 +79,8 @@ class MainActivity : AppCompatActivity() {
     private fun openPisteMapScreen() = openFragment(PistesFragment.newInstance())
 
     private fun openGeneralInfoScreen() = openFragment(GeneralInfoFragment.newInstance())
+
+    private fun openAboutScreen() = openFragment(AboutFragment.newInstance())
 
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
