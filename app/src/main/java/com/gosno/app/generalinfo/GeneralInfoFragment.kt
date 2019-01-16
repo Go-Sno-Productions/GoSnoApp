@@ -14,18 +14,20 @@ import kotlinx.android.synthetic.main.fragment_general_info.*
 
 class GeneralInfoFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_general_info, container, false)
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         hotelAvantiTextView.setOnClickListener { openUrl("https://goo.gl/maps/RquWscYrhfp") }
         hotelCimsTextView.setOnClickListener { openUrl("https://goo.gl/maps/1PzeeUGor2S2") }
-        pranasTextView.setOnClickListener { openFacebook("https://m.facebook.com/PranasGataveckas") }
+        pranasTextView.setOnClickListener { openFacebook("https://facebook.com/PranasGataveckas") }
         phoneTextView.setOnClickListener { callPhone() }
+        webTextView.setOnClickListener {
+            openUrl("https://www.wegoproject.lt/slidinejmas-andoroje-grandvalira-2019.html")
+        }
     }
 
     private fun openUrl(url: String) {
