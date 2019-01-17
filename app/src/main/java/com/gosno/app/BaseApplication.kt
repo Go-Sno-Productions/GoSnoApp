@@ -24,7 +24,12 @@ class BaseApplication : Application() {
 
     companion object {
         fun isOnion(context: Context) = (context.applicationContext as BaseApplication).onionRepository.isOnion()
+
+        fun setIsOnion(context: Context, enable: Boolean) =
+            (context.applicationContext as BaseApplication).onionRepository.setIsOnion(enable)
     }
 }
 
 fun Context.isOnion() = BaseApplication.isOnion(this)
+
+fun Context.setIsOnion(enable: Boolean) = BaseApplication.setIsOnion(this, enable)

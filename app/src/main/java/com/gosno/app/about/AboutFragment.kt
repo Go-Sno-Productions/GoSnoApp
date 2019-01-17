@@ -10,22 +10,27 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gosno.app.R
+import com.gosno.app.isOnion
+import com.gosno.app.setIsOnion
 import kotlinx.android.synthetic.main.fragment_about.*
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
 
-
 class AboutFragment : Fragment() {
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_about, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpImageViews()
         view.post { startKonfetti() }
+        rokasImageView.setOnClickListener {
+            it.context.setIsOnion(!it.context.isOnion())
+            activity!!.recreate()
+        }
     }
 
     private fun setUpImageViews() {
@@ -35,22 +40,22 @@ class AboutFragment : Fragment() {
 
     private fun loadCircleImageView(drawableResId: Int, imageView: ImageView) {
         Glide.with(context!!)
-                .load(drawableResId)
-                .apply(RequestOptions.circleCropTransform())
-                .into(imageView)
+            .load(drawableResId)
+            .apply(RequestOptions.circleCropTransform())
+            .into(imageView)
     }
 
-    private fun startKonfetti() {
+    private fun startKonfetti() = konfetti?.apply {
         konfetti.build()
-                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-                .setDirection(0.0, 359.0)
-                .setSpeed(1f, 5f)
-                .setFadeOutEnabled(true)
-                .setTimeToLive(2000L)
-                .addShapes(Shape.RECT, Shape.CIRCLE)
-                .addSizes(Size(12))
-                .setPosition(-50f, konfetti.width + 50f, -50f, -50f)
-                .stream(300, 5000L)
+            .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+            .setDirection(0.0, 359.0)
+            .setSpeed(1f, 5f)
+            .setFadeOutEnabled(true)
+            .setTimeToLive(2000L)
+            .addShapes(Shape.RECT, Shape.CIRCLE)
+            .addSizes(Size(12))
+            .setPosition(-50f, konfetti.width + 50f, -50f, -50f)
+            .stream(300, 5000L)
     }
 
     companion object {
