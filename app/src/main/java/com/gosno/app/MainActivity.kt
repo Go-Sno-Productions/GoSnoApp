@@ -62,13 +62,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
         navigationView.setCheckedItem(R.id.home)
+        setUpOnionNavigationView()
+    }
+
+    private fun setUpOnionNavigationView() {
+        if (isOnion()) {
+            navigationView.menu.findItem(R.id.traceSnow).title = getString(R.string.tinder)
+        }
     }
 
     private fun isCurrentFragmentPisteMap(): Boolean =
         supportFragmentManager.findFragmentById(R.id.contentFrame) is PistesFragment
 
     private fun openTraceSnow() {
-        val launchIntent = packageManager.getLaunchIntentForPackage(TRACE_SNOW_PACKAGE_NAME)
+        val launchIntent = packageManager.getLaunchIntentForPackage(getAppPackageName())
         if (launchIntent != null) {
             startActivity(launchIntent)
         } else {
@@ -79,8 +86,14 @@ class MainActivity : AppCompatActivity() {
     private fun openTraceSnowPlayStore() {
         val playStoreIntent = Intent(Intent.ACTION_VIEW)
         playStoreIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        playStoreIntent.data = Uri.parse("market://details?id=$TRACE_SNOW_PACKAGE_NAME")
+        playStoreIntent.data = Uri.parse("market://details?id=${getAppPackageName()}")
         startActivity(playStoreIntent)
+    }
+
+    private fun getAppPackageName() = if (isOnion()) {
+        TINDER_PACKAGE_NAME
+    } else {
+        TRACE_SNOW_PACKAGE_NAME
     }
 
     private fun setUpFragment() = openPisteMapScreen()
@@ -123,8 +136,9 @@ class MainActivity : AppCompatActivity() {
         }
 
     companion object {
-        fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
-
         private const val TRACE_SNOW_PACKAGE_NAME = "com.alpinereplay.android"
+        private const val TINDER_PACKAGE_NAME = "com.tinder"
+
+        fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
     }
 }
