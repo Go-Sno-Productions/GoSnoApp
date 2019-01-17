@@ -7,30 +7,33 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
 
-class GifService {
+class GifService : (GifBucket) -> Unit {
     private val handler = Handler(Looper.getMainLooper())
     private val factory = GifBucketFactory()
     private val calendar = Calendar.getInstance().apply { timeZone = TimeZone.getTimeZone("UTC") }
     private val executorService = Executors.newSingleThreadScheduledExecutor { run -> Thread(run, "GifScheduler") }
     private var future: Future<*>? = null
-    private var listener = SafeListener.empty()
+    private var listener = emptyListener
 
     fun start(listener: (GifBucket) -> Unit) {
         cancel()
-        this.listener = SafeListener(listener)
-        val runnable = SearchRunnable(calendar, factory, handler, this.listener)
+        this.listener = listener
+        val runnable = SearchRunnable(calendar, factory, this)
         future = executorService.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.MINUTES)
     }
 
     fun cancel() {
-        listener.dispose()
+        listener = emptyListener
         future?.cancel(true)
+    }
+
+    override fun invoke(bucket: GifBucket) {
+        handler.post { listener(bucket) }
     }
 
     private class SearchRunnable(
         private val calendar: Calendar,
         private val bucketFactory: GifBucketFactory,
-        private val handler: Handler,
         private val listener: (GifBucket) -> Unit
     ) : Runnable {
         private var lastRequest: GifBucketRequest? = null
@@ -38,8 +41,7 @@ class GifService {
         override fun run() {
             val request = getRequest(System.currentTimeMillis())
             if (request != lastRequest) {
-                val bucket = bucketFactory.provide(request)
-                handler.post { listener(bucket) }
+                listener(bucketFactory.provide(request))
                 lastRequest = request
             }
         }
@@ -61,22 +63,6 @@ class GifService {
         }
     }
 
-    private class SafeListener(private var listener: (GifBucket) -> Unit) : (GifBucket) -> Unit {
-        override fun invoke(bucket: GifBucket) {
-            listener.invoke(bucket)
-        }
-
-        fun dispose() {
-            listener = emptyListener
-        }
-
-        companion object {
-            private val emptyListener: (GifBucket) -> Unit = { /* empty */ }
-
-            fun empty() = SafeListener(emptyListener)
-        }
-    }
-
     companion object {
         private const val FLY_OFF = 1548523800000L
         private const val FIRST_LIFT = 1548574200000L
@@ -85,5 +71,7 @@ class GifService {
 
         private const val SKI_OPEN = 450 // 7:30 in UTC
         private const val SKI_CLOSE = 990 // 16:30 in UTC
+
+        private val emptyListener: (GifBucket) -> Unit = { /* empty */ }
     }
 }
