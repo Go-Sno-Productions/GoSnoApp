@@ -2,6 +2,7 @@ package com.gosno.app.gif
 
 import android.os.Handler
 import android.os.Looper
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit
@@ -43,16 +44,21 @@ class GifService {
         }
 
         private fun getRequest(time: Long): GifBucketRequest {
-            if (time < FLY_OFF) {
-                return GifBucketRequest.WaitingRequest()
-            } else if (time < FIRST_LIFT) {
-                return GifBucketRequest.PartyRequest()
-            } else if (time < SKI_CLOSING) {
-                return GifBucketRequest.SkiRequest() // TODO check hours
-            } else if (time < FLY_HOME) {
-                return GifBucketRequest.PartyRequest()
+            return when {
+                time < FLY_OFF -> GifBucketRequest.WaitingRequest()
+                time < FIRST_LIFT -> GifBucketRequest.PartyRequest()
+                time < SKI_CLOSING && isSkyHours(time) -> GifBucketRequest.SkiRequest()
+                time < FLY_HOME -> GifBucketRequest.PartyRequest()
+                else -> GifBucketRequest.ByeRequest()
             }
-            return GifBucketRequest.ByeRequest()
+        }
+
+        private fun isSkyHours(time: Long): Boolean {
+            val calendar = Calendar.getInstance()
+            calendar.timeZone = TimeZone.getTimeZone("UTC")
+            calendar.timeInMillis = time
+            val totalMin = calendar.get(Calendar.MINUTE) + calendar.get(Calendar.HOUR_OF_DAY) * 60
+            return totalMin in (SKI_OPEN + 1)..(SKI_CLOSE - 1)
         }
     }
 
@@ -66,7 +72,7 @@ class GifService {
         }
 
         companion object {
-            private val emptyListener: (GifBucket) -> Unit = {}
+            private val emptyListener: (GifBucket) -> Unit = { /* empty */ }
 
             fun empty() = SafeListener(emptyListener)
         }
@@ -77,5 +83,8 @@ class GifService {
         private const val FIRST_LIFT = 1548574200000L
         private const val SKI_CLOSING = 1549038600000L
         private const val FLY_HOME = 1549123200000L
+
+        private const val SKI_OPEN = 450 // 7:30 in UTC
+        private const val SKI_CLOSE = 990 // 16:30 in UTC
     }
 }
