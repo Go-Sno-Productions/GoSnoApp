@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit
 
 class GifService : (GifBucket) -> Unit {
     private val handler = Handler(Looper.getMainLooper())
-    private val factory = GifBucketFactory()
     private val calendar = Calendar.getInstance().apply { timeZone = TimeZone.getTimeZone("UTC") }
     private val executorService = Executors.newSingleThreadScheduledExecutor { run -> Thread(run, "GifScheduler") }
     private var future: Future<*>? = null
@@ -18,7 +17,7 @@ class GifService : (GifBucket) -> Unit {
     fun start(listener: (GifBucket) -> Unit) {
         cancel()
         this.listener = listener
-        val runnable = SearchRunnable(calendar, factory, this)
+        val runnable = SearchRunnable(calendar, this)
         future = executorService.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.MINUTES)
     }
 
@@ -33,26 +32,25 @@ class GifService : (GifBucket) -> Unit {
 
     private class SearchRunnable(
         private val calendar: Calendar,
-        private val bucketFactory: GifBucketFactory,
         private val listener: (GifBucket) -> Unit
     ) : Runnable {
-        private var lastRequest: GifBucketRequest? = null
+        private var lastBucketId = -1
 
         override fun run() {
-            val request = getRequest(System.currentTimeMillis())
-            if (request != lastRequest) {
-                listener(bucketFactory.provide(request))
-                lastRequest = request
+            val bucket = getBucket(System.currentTimeMillis())
+            if (bucket.id != lastBucketId) {
+                lastBucketId = bucket.id
+                listener(bucket)
             }
         }
 
-        private fun getRequest(time: Long): GifBucketRequest {
+        private fun getBucket(time: Long): GifBucket {
             return when {
-                time < FLY_OFF -> GifBucketRequest.WaitingRequest()
-                time < FIRST_LIFT -> GifBucketRequest.PartyRequest()
-                time < SKI_CLOSING && isSkyHours(time) -> GifBucketRequest.SkiRequest()
-                time < FLY_HOME -> GifBucketRequest.PartyRequest()
-                else -> GifBucketRequest.ByeRequest()
+                time < FLY_OFF -> GifBucket.waiting()
+                time < FIRST_LIFT -> GifBucket.party()
+                time < SKI_CLOSING && isSkyHours(time) -> GifBucket.skiing()
+                time < FLY_HOME -> GifBucket.party()
+                else -> GifBucket.bye()
             }
         }
 
