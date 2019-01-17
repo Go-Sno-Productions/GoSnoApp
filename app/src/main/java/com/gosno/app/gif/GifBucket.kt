@@ -15,6 +15,8 @@ data class GifBucket(val id: Int, val gifResources: IntArray) {
     }
 
     companion object {
+        // TODO provide resources for gif buckets
+
         fun waiting() = GifBucket(0, intArrayOf())
         fun party() = GifBucket(1, intArrayOf())
         fun skiing() = GifBucket(2, intArrayOf())
