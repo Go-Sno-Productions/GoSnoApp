@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.dvoiss.geocities.Geocities
 import com.gosno.app.about.AboutFragment
 import com.gosno.app.generalinfo.GeneralInfoFragment
 import com.gosno.app.piste.PistesFragment
@@ -25,6 +26,14 @@ class MainActivity : AppCompatActivity() {
         setUpToolbar()
         setUpFragment()
         setUpHeader()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        if (newBase.isOnion()) {
+            super.attachBaseContext(Geocities.wrap(newBase))
+        } else {
+            super.attachBaseContext(newBase)
+        }
     }
 
     private fun setUpNavigationView() {
