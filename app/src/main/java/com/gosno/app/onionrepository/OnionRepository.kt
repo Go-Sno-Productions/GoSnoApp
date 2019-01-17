@@ -2,6 +2,7 @@ package com.gosno.app.onionrepository
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.preference.PreferenceManager
 
 class OnionRepository {
@@ -10,7 +11,7 @@ class OnionRepository {
     fun init(context: Context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         if (isFirstTime()) {
-            setIsOnion(true)
+            setIsOnion(isOnionDevice())
             setFirstTimeFalse()
         }
     }
@@ -20,6 +21,8 @@ class OnionRepository {
     private fun setFirstTimeFalse() = saveBoolean(KEY_IS_FIRST_TIME, false)
 
     fun isOnion() = getBoolean(KEY_IS_ONION, false)
+
+    private fun isOnionDevice() = Build.MODEL.contains("Pixel 2", true)
 
     fun setIsOnion(enable: Boolean) = saveBoolean(KEY_IS_ONION, enable)
 
