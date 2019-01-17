@@ -10,15 +10,15 @@ import java.util.concurrent.TimeUnit
 class GifService {
     private val handler = Handler(Looper.getMainLooper())
     private val factory = GifBucketFactory()
-    private val executorService =
-        Executors.newSingleThreadScheduledExecutor { runnable -> Thread(runnable, "GifScheduler") }
+    private val calendar = Calendar.getInstance().apply { timeZone = TimeZone.getTimeZone("UTC") }
+    private val executorService = Executors.newSingleThreadScheduledExecutor { run -> Thread(run, "GifScheduler") }
     private var future: Future<*>? = null
     private var listener = SafeListener.empty()
 
     fun start(listener: (GifBucket) -> Unit) {
         cancel()
         this.listener = SafeListener(listener)
-        val runnable = SearchRunnable(factory, handler, this.listener)
+        val runnable = SearchRunnable(calendar, factory, handler, this.listener)
         future = executorService.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.MINUTES)
     }
 
@@ -28,6 +28,7 @@ class GifService {
     }
 
     private class SearchRunnable(
+        private val calendar: Calendar,
         private val bucketFactory: GifBucketFactory,
         private val handler: Handler,
         private val listener: (GifBucket) -> Unit
@@ -54,8 +55,6 @@ class GifService {
         }
 
         private fun isSkyHours(time: Long): Boolean {
-            val calendar = Calendar.getInstance()
-            calendar.timeZone = TimeZone.getTimeZone("UTC")
             calendar.timeInMillis = time
             val totalMin = calendar.get(Calendar.MINUTE) + calendar.get(Calendar.HOUR_OF_DAY) * 60
             return totalMin in (SKI_OPEN + 1)..(SKI_CLOSE - 1)
