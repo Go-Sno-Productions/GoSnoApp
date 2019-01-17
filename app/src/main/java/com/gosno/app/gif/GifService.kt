@@ -45,6 +45,12 @@ class GifService {
         private fun getRequest(time: Long): GifBucketRequest {
             if (time < FLY_OFF) {
                 return GifBucketRequest.WaitingRequest()
+            } else if (time < FIRST_LIFT) {
+                return GifBucketRequest.PartyRequest()
+            } else if (time < SKI_CLOSING) {
+                return GifBucketRequest.SkiRequest() // TODO check hours
+            } else if (time < FLY_HOME) {
+                return GifBucketRequest.PartyRequest()
             }
             return GifBucketRequest.ByeRequest()
         }
@@ -67,12 +73,9 @@ class GifService {
     }
 
     companion object {
-        // TODO
-        // https://www.epochconverter.com/
         private const val FLY_OFF = 1548523800000L
-        private const val BARCELONA = 2L
-        private const val SKY_TIME = 3L
-        private const val BARCELONA_2 = 4L
-        private const val FLY_HOME = 5L
+        private const val FIRST_LIFT = 1548574200000L
+        private const val SKI_CLOSING = 1549038600000L
+        private const val FLY_HOME = 1549123200000L
     }
 }
