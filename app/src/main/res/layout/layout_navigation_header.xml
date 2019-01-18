@@ -3,6 +3,5 @@
     android:id="@+id/headerImageView"
     android:layout_width="match_parent"
     android:layout_height="240dp"
-    android:background="?attr/colorPrimaryDark"
     android:foreground="?selectableItemBackground"
     android:src="@mipmap/ic_launcher" />

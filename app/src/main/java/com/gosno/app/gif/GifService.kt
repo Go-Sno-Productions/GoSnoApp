@@ -31,8 +31,8 @@ class GifService : (GifBucket) -> Unit {
     }
 
     private class SearchRunnable(
-        private val calendar: Calendar,
-        private val listener: (GifBucket) -> Unit
+            private val calendar: Calendar,
+            private val listener: (GifBucket) -> Unit
     ) : Runnable {
         private var lastBucketId = -1
 

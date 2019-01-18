@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.dvoiss.geocities.Geocities
 import com.gosno.app.about.AboutFragment
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isCurrentFragmentPisteMap(): Boolean =
-        supportFragmentManager.findFragmentById(R.id.contentFrame) is PistesFragment
+            supportFragmentManager.findFragmentById(R.id.contentFrame) is PistesFragment
 
     private fun openTraceSnow() {
         val launchIntent = packageManager.getLaunchIntentForPackage(getAppPackageName())
@@ -120,27 +121,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpHeader() {
-        val requestOptions = RequestOptions().centerCrop()
-            .placeholder(R.mipmap.ic_launcher)
         val requestBuilder = Glide.with(this)
-            .asGif()
-            .apply(requestOptions)
+                .asGif()
+                .apply(RequestOptions().centerCrop())
+                .transition(DrawableTransitionOptions.withCrossFade())
         val imageView = navigationView.getHeaderView(0) as ImageView
         val service = LifecycleGifService { resource ->
             requestBuilder.load(resource)
-                .into(imageView)
+                    .into(imageView)
         }
         service.attach(lifecycle)
         imageView.setOnClickListener { service.requestNewGif() }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             drawerLayout.openDrawer(GravityCompat.START)
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+            return true
         }
+        return super.onOptionsItemSelected(item)
+    }
 
     companion object {
         private const val TRACE_SNOW_PACKAGE_NAME = "com.alpinereplay.android"
