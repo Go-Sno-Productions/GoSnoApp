@@ -4,47 +4,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/vaidasImageView"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            tools:srcCompat="@drawable/vaidas" />
-
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline5"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:paddingStart="16dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="24dp"
-            android:text="@string/vaidas" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/rokasImageView"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            tools:srcCompat="@drawable/rokas" />
+            <ImageView
+                android:id="@+id/vaidasImageView"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                tools:srcCompat="@drawable/vaidas" />
 
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingStart="16dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="16dp"
-            android:text="@string/rokas" />
-    </LinearLayout>
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="24dp"
+                android:text="@string/vaidas" />
+
+            <ImageView
+                android:id="@+id/rokasImageView"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                tools:srcCompat="@drawable/rokas" />
+
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:text="@string/rokas" />
+
+            <ImageView
+                android:id="@+id/antanasImageView"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:visibility="gone"
+                tools:srcCompat="@drawable/antanas"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/antanasTextView"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:text="@string/antanas"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/konfetti"
