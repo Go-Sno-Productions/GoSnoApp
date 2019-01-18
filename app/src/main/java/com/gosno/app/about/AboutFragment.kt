@@ -31,7 +31,6 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpImageViews()
-        setUpOnionViews()
         view.post { startKonfetti() }
         vaidasImageView.setOnClickListener {
             click()
@@ -41,14 +40,6 @@ class AboutFragment : Fragment() {
 
     private fun setUpShakeDetector() {
         shakeDetector = ShakeDetector(context!!) { startKonfetti() }
-    }
-
-    private fun setUpOnionViews() {
-        if (context!!.isOnion()) {
-            antanasImageView.visibility = View.VISIBLE
-            antanasTextView.visibility = View.VISIBLE
-            loadCircleImageView(R.drawable.antanas, antanasImageView)
-        }
     }
 
     private fun click() {

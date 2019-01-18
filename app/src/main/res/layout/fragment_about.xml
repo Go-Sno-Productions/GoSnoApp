@@ -49,27 +49,6 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="24dp"
                 android:text="@string/rokas" />
-
-            <ImageView
-                android:id="@+id/antanasImageView"
-                android:layout_width="128dp"
-                android:layout_height="128dp"
-                android:visibility="gone"
-                tools:srcCompat="@drawable/antanas"
-                tools:visibility="visible" />
-
-            <TextView
-                android:id="@+id/antanasTextView"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:text="@string/antanas"
-                android:visibility="gone"
-                tools:visibility="visible" />
         </LinearLayout>
     </ScrollView>
 
