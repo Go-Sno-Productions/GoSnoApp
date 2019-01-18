@@ -47,6 +47,7 @@
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
+                android:paddingBottom="24dp"
                 android:text="@string/rokas" />
 
             <ImageView
