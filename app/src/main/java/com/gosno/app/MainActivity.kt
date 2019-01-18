@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gosno.app.about.AboutFragment
 import com.gosno.app.generalinfo.GeneralInfoFragment
+import com.gosno.app.gif.LifecycleGifService
 import com.gosno.app.piste.PistesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -97,12 +98,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpHeader() {
+        val requestOptions = RequestOptions().centerCrop()
+            .placeholder(R.mipmap.ic_launcher)
+        val requestBuilder = Glide.with(this)
+            .asGif()
+            .apply(requestOptions)
         val imageView = navigationView.getHeaderView(0) as ImageView
-        imageView.setOnClickListener { }
-        Glide.with(this).asGif()
-            .apply(RequestOptions().centerCrop())
-            .load(R.drawable.img_default)
-            .into(imageView)
+        val service = LifecycleGifService { resource ->
+            requestBuilder.load(resource)
+                .into(imageView)
+        }
+        service.attach(lifecycle)
+        imageView.setOnClickListener { service.requestNewGif() }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
