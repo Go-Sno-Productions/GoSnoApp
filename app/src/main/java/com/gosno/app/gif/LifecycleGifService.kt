@@ -27,9 +27,9 @@ class LifecycleGifService(private val listener: (gifRes: Int) -> Unit) {
         })
     }
 
-    fun requestNewGif() = gifRotator?.nextId() ?: DEFAULT_GIF
+    fun requestNewGif() = gifRotator?.nextId() ?: DEFAULT_IMAGE
 
     companion object {
-        private const val DEFAULT_GIF = R.drawable.img_default
+        private const val DEFAULT_IMAGE = R.mipmap.ic_launcher
     }
 }
