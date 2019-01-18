@@ -1,4 +1,4 @@
-package com.gosno.app.onionrepository
+package com.gosno.app.component.onionrepository
 
 import android.content.Context
 import android.content.SharedPreferences

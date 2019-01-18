@@ -5,7 +5,7 @@ import android.content.Context
 import com.dvoiss.geocities.Geocities
 import com.github.piasy.biv.BigImageViewer
 import com.github.piasy.biv.loader.glide.GlideImageLoader
-import com.gosno.app.onionrepository.OnionRepository
+import com.gosno.app.component.onionrepository.OnionRepository
 
 class BaseApplication : Application() {
     private lateinit var onionRepository: OnionRepository
