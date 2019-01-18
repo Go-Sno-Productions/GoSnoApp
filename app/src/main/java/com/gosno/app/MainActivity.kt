@@ -10,10 +10,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.dvoiss.geocities.Geocities
 import com.gosno.app.about.AboutFragment
 import com.gosno.app.generalinfo.GeneralInfoFragment
+import com.gosno.app.gif.LifecycleGifService
 import com.gosno.app.piste.PistesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -72,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isCurrentFragmentPisteMap(): Boolean =
-        supportFragmentManager.findFragmentById(R.id.contentFrame) is PistesFragment
+            supportFragmentManager.findFragmentById(R.id.contentFrame) is PistesFragment
 
     private fun openTraceSnow() {
         val launchIntent = packageManager.getLaunchIntentForPackage(getAppPackageName())
@@ -119,21 +121,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpHeader() {
+        val requestBuilder = Glide.with(this)
+                .asGif()
+                .apply(RequestOptions().centerCrop())
+                .transition(DrawableTransitionOptions.withCrossFade())
         val imageView = navigationView.getHeaderView(0) as ImageView
-        imageView.setOnClickListener { }
-        Glide.with(this).asGif()
-            .apply(RequestOptions().centerCrop())
-            .load(R.drawable.img_default)
-            .into(imageView)
+        val service = LifecycleGifService { resource ->
+            requestBuilder.load(resource)
+                    .into(imageView)
+        }
+        service.attach(lifecycle)
+        imageView.setOnClickListener { service.requestNewGif() }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             drawerLayout.openDrawer(GravityCompat.START)
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+            return true
         }
+        return super.onOptionsItemSelected(item)
+    }
 
     companion object {
         private const val TRACE_SNOW_PACKAGE_NAME = "com.alpinereplay.android"
