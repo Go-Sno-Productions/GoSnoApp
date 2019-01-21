@@ -24,6 +24,7 @@ class GeneralInfoFragment : Fragment() {
         hotelAvantiTextView.setOnClickListener { openUrl("https://goo.gl/maps/RquWscYrhfp") }
         hotelCimsTextView.setOnClickListener { openUrl("https://goo.gl/maps/1PzeeUGor2S2") }
         pranasTextView.setOnClickListener { openFacebook("https://facebook.com/PranasGataveckas") }
+        andorraGroupTextView.setOnClickListener { openFacebook("https://www.facebook.com/groups/2477585492256152/") }
         phoneTextView.setOnClickListener { callPhone() }
         webTextView.setOnClickListener {
             openUrl("https://www.wegoproject.lt/slidinejmas-andoroje-grandvalira-2019.html")
